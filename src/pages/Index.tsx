@@ -1,6 +1,7 @@
 import { Features } from "@/components/Features";
 import { Header } from "@/components/Header";
 import { Hero } from "@/components/Hero";
+import { Web3Auth } from "@/components/Web3Auth";
 
 const Index = () => {
   return (
@@ -8,6 +9,9 @@ const Index = () => {
       <Header />
       <Hero />
       <Features />
+      <div className="container mx-auto px-4 py-8">
+        <Web3Auth />
+      </div>
     </div>
   );
 };
