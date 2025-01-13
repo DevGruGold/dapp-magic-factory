@@ -14,7 +14,7 @@ import { Footer } from "./components/Footer";
 // Web3Modal configuration
 const projectId = 'YOUR_WALLETCONNECT_PROJECT_ID'; // Replace with your WalletConnect project ID
 const chains = [mainnet, polygon];
-const { publicClient } = configureChains(chains, [publicProvider()]);
+const { publicClient } = configureChains(chains, [w3mProvider({ projectId }), publicProvider()]);
 
 const wagmiConfig = createConfig({
   autoConnect: true,
