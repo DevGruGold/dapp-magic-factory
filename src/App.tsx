@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
 import { mainnet, polygon } from 'wagmi/chains';
-import { EthereumClient, w3mConnector, W3mProvider } from '@web3modal/ethereum';
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
 import { Web3Modal } from '@web3modal/react';
 import { publicProvider } from 'wagmi/providers/public';
 import Index from "./pages/Index";
@@ -18,7 +18,7 @@ const { publicClient } = configureChains(chains, [publicProvider()]);
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: [w3mConnector({ projectId, chains })],
+  connectors: w3mConnectors({ projectId, chains }),
   publicClient,
 });
 
@@ -28,23 +28,21 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <WagmiConfig config={wagmiConfig}>
-    <W3mProvider ethereumClient={ethereumClient}>
-      <QueryClientProvider client={queryClient}>
-        <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <BrowserRouter>
-            <div className="min-h-screen flex flex-col">
-              <Routes>
-                <Route path="/" element={<Index />} />
-              </Routes>
-              <Footer />
-            </div>
-          </BrowserRouter>
-        </TooltipProvider>
-      </QueryClientProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <div className="min-h-screen flex flex-col">
+            <Routes>
+              <Route path="/" element={<Index />} />
+            </Routes>
+            <Footer />
+          </div>
+        </BrowserRouter>
+      </TooltipProvider>
       <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
-    </W3mProvider>
+    </QueryClientProvider>
   </WagmiConfig>
 );
 

@@ -7,7 +7,24 @@ import { useToast } from './ui/use-toast';
 export const Web3Auth = () => {
   const { open } = useWeb3Modal();
   const { address, isConnected } = useAccount();
-  const { signMessage } = useSignMessage();
+  const { signMessage } = useSignMessage({
+    onSuccess(signature) {
+      setIsAuthenticated(true);
+      toast({
+        title: "Successfully authenticated!",
+        description: "You are now signed in with your wallet.",
+      });
+      // Redirect back to app
+      window.location.href = '/';
+    },
+    onError() {
+      toast({
+        title: "Authentication failed",
+        description: "Please try again.",
+        variant: "destructive",
+      });
+    }
+  });
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const { toast } = useToast();
 
@@ -19,19 +36,7 @@ export const Web3Auth = () => {
       }
 
       if (!isAuthenticated) {
-        const signature = await signMessage({
-          message: 'Sign this message to verify your wallet ownership',
-        });
-
-        if (signature) {
-          setIsAuthenticated(true);
-          toast({
-            title: "Successfully authenticated!",
-            description: "You are now signed in with your wallet.",
-          });
-          // Redirect back to app
-          window.location.href = '/';
-        }
+        signMessage({ message: 'Sign this message to verify your wallet ownership' });
       }
     } catch (error) {
       toast({
