@@ -38,24 +38,26 @@ const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const queryClient = new QueryClient();
 
-const App = () => (
-  <WagmiConfig config={wagmiConfig}>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <div className="min-h-screen flex flex-col">
-            <Routes>
-              <Route path="/" element={<Index />} />
-            </Routes>
-            <Footer />
-          </div>
-        </BrowserRouter>
-      </TooltipProvider>
-      <Web3Modal projectId={projectId || ''} ethereumClient={ethereumClient} />
-    </QueryClientProvider>
-  </WagmiConfig>
-);
+const App = () => {
+  return (
+    <WagmiConfig config={wagmiConfig}>
+      <QueryClientProvider client={queryClient}>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <div className="min-h-screen flex flex-col">
+              <Routes>
+                <Route path="/" element={<Index />} />
+              </Routes>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </TooltipProvider>
+        <Web3Modal projectId={projectId || ''} ethereumClient={ethereumClient} />
+      </QueryClientProvider>
+    </WagmiConfig>
+  );
+};
 
 export default App;
