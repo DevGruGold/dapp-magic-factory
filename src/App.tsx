@@ -12,20 +12,25 @@ import Index from "./pages/Index";
 import { Footer } from "./components/Footer";
 
 // Web3Modal configuration
-const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID || 'YOUR_WALLETCONNECT_PROJECT_ID';
+const projectId = import.meta.env.VITE_WALLETCONNECT_PROJECT_ID;
+
+if (!projectId) {
+  console.warn('WalletConnect Project ID not found. Please set VITE_WALLETCONNECT_PROJECT_ID in your environment variables.');
+}
+
 const chains = [mainnet, polygon];
 
 const { publicClient } = configureChains(
   chains, 
   [
-    w3mProvider({ projectId }),
+    w3mProvider({ projectId: projectId || '' }),
     publicProvider()
   ]
 );
 
 const wagmiConfig = createConfig({
   autoConnect: true,
-  connectors: w3mConnectors({ projectId, chains }),
+  connectors: w3mConnectors({ projectId: projectId || '', chains }),
   publicClient,
 });
 
@@ -48,7 +53,7 @@ const App = () => (
           </div>
         </BrowserRouter>
       </TooltipProvider>
-      <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+      <Web3Modal projectId={projectId || ''} ethereumClient={ethereumClient} />
     </QueryClientProvider>
   </WagmiConfig>
 );
